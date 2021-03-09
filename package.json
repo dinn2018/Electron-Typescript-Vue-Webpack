@@ -1,0 +1,105 @@
+{
+  "name": "electron-typescript-vue-webpack",
+  "version": "1.0.0",
+  "description": "",
+  "main": "./dist/electron/main.js",
+  "scripts": {
+    "build": "node .electron-vue/build.js && electron-builder",
+    "build:dir": "node .electron-vue/build.js && electron-builder --dir",
+    "build:clean": "cross-env BUILD_TARGET=clean node .electron-vue/build.js",
+    "dev": "node .electron-vue/dev-runner.js",
+    "e2e": "npm run pack && mocha test/e2e",
+    "pack": "npm run pack:main && npm run pack:renderer && npm run pack:preload",
+    "pack:main": "cross-env NODE_ENV=production webpack --progress --colors --config .electron-vue/webpack.main.config.js",
+    "pack:renderer": "cross-env NODE_ENV=production webpack --progress --colors --config .electron-vue/webpack.renderer.config.js",
+    "pack:preload": "cross-env NODE_ENV=production webpack --progress --colors --config .electron-vue/webpack.preload.config.js",
+    "test": "npm run unit && npm run e2e",
+    "unit": "karma start test/unit/karma.conf.js",
+    "postinstall": "electron-builder install-app-deps"
+  },
+  "build": {
+    "productName": "RYS",
+    "appId": "org.rys.app",
+    "artifactName": "${productName}-${os}-${arch}-${version}.${ext}",
+    "afterSign": "build/assets/notarize.js",
+    "directories": {
+      "output": "build"
+    },
+    "files": [
+      "dist/electron/**/*"
+    ],
+    "publish": [
+      {
+        "provider": "github"
+      }
+    ],
+    "dmg": {
+      "contents": [
+        {
+          "x": 410,
+          "y": 150,
+          "type": "link",
+          "path": "/Applications"
+        },
+        {
+          "x": 130,
+          "y": 150,
+          "type": "file"
+        }
+      ]
+    }
+  },
+  "protocols": {
+    "name": "RYS App Protocol",
+    "schemes": [
+      "rys-app"
+    ]
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "electron": "^12.0.0",
+    "vue-devtools": "^5.1.4"
+  },
+  "dependencies": {
+    "@types/node": "^14.14.32",
+    "cfonts": "^2.9.1",
+    "chalk": "^4.1.0",
+    "copy-webpack-plugin": "^4.0.1",
+    "css-loader": "^0.28.4",
+    "del": "^6.0.0",
+    "electron-debug": "^1.4.0",
+    "electron-devtools-installer": "^2.2.0",
+    "electron-log": "^4.3.2",
+    "electron-notarize": "^0.2.1",
+    "electron-settings": "^4.0.2",
+    "electron-updater": "^4.0.6",
+    "extract-text-webpack-plugin": "^3.0.2",
+    "fork-ts-checker-webpack-plugin": "^0.4.9",
+    "html-webpack-plugin": "^2.30.1",
+    "multispinner": "^0.2.1",
+    "node-sass": "4.14.1",
+    "sass-loader": "7.0.3",
+    "style-loader": "^0.18.2",
+    "stylus": "^0.54.5",
+    "stylus-loader": "^3.0.2",
+    "ts-loader": "3.5.0",
+    "tsconfig-paths-webpack-plugin": "^3.3.0",
+    "tslint": "5.11.0",
+    "tslint-loader": "3.6.0",
+    "typescript": "^4.2.3",
+    "uglifyjs-webpack-plugin": "^1.2.7",
+    "vue": "^2.6.12",
+    "vue-loader": "^13.0.5",
+    "vue-property-decorator": "^7.0.0",
+    "vue-resource": "^1.5.2",
+    "vue-router": "^3.5.1",
+    "vue-template-compiler": "^2.4.2",
+    "vuex": "^3.6.2",
+    "webpack": "^3.5.2",
+    "webpack-dev-server": "^2.7.1",
+    "webpack-hot-middleware": "^2.18.2",
+    "webpack-merge": "^4.1.0"
+  }
+}
